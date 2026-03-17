@@ -15,6 +15,14 @@ import { Link } from "wouter";
 
 export default function Academy() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Track scroll position for sticky nav styling
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -31,8 +39,13 @@ export default function Academy() {
   return (
     <div className="min-h-screen bg-[#0B1F3B] text-white font-sans selection:bg-[#d4af37] selection:text-[#0B1F3B]">
 
-      {/* Navigation */}
-      <nav className="container mx-auto px-6 py-6 flex items-center justify-between relative z-50">
+      {/* Navigation — sticky, scroll-aware */}
+      <header className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#0B1F3B]/90 backdrop-blur-md shadow-[0_2px_24px_rgba(0,0,0,0.4)] border-b border-white/10"
+          : "bg-transparent"
+      }`}>
+      <nav className="container mx-auto px-6 py-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663047046836/hif67mmfrxXgLDxyBaPs4s/cba_logo_cropped_61583c5c.png" alt="CBA Logo" className="h-12 w-12 object-contain" />
           <span className="font-serif font-bold text-xl tracking-wide">Chronological Bible Academy</span>
@@ -56,6 +69,7 @@ export default function Academy() {
           <Menu className="w-6 h-6" />
         </button>
       </nav>
+      </header>
 
       {/* Mobile Menu Overlay */}
       <div
@@ -207,6 +221,70 @@ export default function Academy() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-24 bg-[#071529] relative border-t border-white/10">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-[#d4af37] mb-6">
+              <span className="w-2 h-2 rounded-full bg-[#d4af37]"></span>
+              What Readers Are Saying
+            </div>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-white">Lives Changed by the Framework</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "I've been a Christian for 20 years and never truly understood how the Old Testament connected to Jesus. The 7-Step Continuum changed everything for me. I finally see the whole story.",
+                name: "Sarah M.",
+                role: "New Believer, Texas",
+                stars: 5,
+              },
+              {
+                quote: "This is the resource I wish I had when I first started reading the Bible. Bruce has a gift for making complex theology feel simple and accessible. I've already recommended it to my entire small group.",
+                name: "James T.",
+                role: "Small Group Leader, Ohio",
+                stars: 5,
+              },
+              {
+                quote: "I was skeptical at first — I've tried Bible reading plans before and always gave up. But the chronological framework gave me a roadmap. For the first time, I actually finished reading through the whole Bible.",
+                name: "Rachel K.",
+                role: "Seeking Christian, California",
+                stars: 5,
+              },
+            ].map((t, i) => (
+              <div
+                key={i}
+                className="bg-white/5 border border-white/10 rounded-2xl p-8 flex flex-col gap-6 hover:bg-white/8 transition-colors"
+              >
+                {/* Stars */}
+                <div className="flex gap-1">
+                  {Array.from({ length: t.stars }).map((_, s) => (
+                    <svg key={s} className="w-4 h-4 text-[#d4af37] fill-[#d4af37]" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                {/* Quote */}
+                <blockquote className="text-gray-300 leading-relaxed flex-1 text-[0.95rem]">
+                  &ldquo;{t.quote}&rdquo;
+                </blockquote>
+                {/* Attribution */}
+                <div className="flex items-center gap-3 pt-2 border-t border-white/10">
+                  <div className="w-9 h-9 rounded-full bg-[#d4af37]/20 border border-[#d4af37]/40 flex items-center justify-center text-[#d4af37] font-bold text-sm font-serif">
+                    {t.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">{t.name}</p>
+                    <p className="text-gray-500 text-xs">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
