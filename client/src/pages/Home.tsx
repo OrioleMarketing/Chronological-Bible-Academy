@@ -9,28 +9,125 @@
  * - Interaction: Smooth color transitions on hover, subtle shadow glows on CTAs
  */
 
-import { BookOpen, GraduationCap, Users, ArrowRight, CheckCircle2, ChevronRight } from "lucide-react";
+import { BookOpen, GraduationCap, Users, ArrowRight, CheckCircle2, ChevronRight, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 
 export default function Academy() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
+
+  const handleNavClick = () => setMobileMenuOpen(false);
+
   return (
     <div className="min-h-screen bg-[#0B1F3B] text-white font-sans selection:bg-[#d4af37] selection:text-[#0B1F3B]">
 
       {/* Navigation */}
-      <nav className="container mx-auto px-6 py-6 flex items-center justify-between">
+      <nav className="container mx-auto px-6 py-6 flex items-center justify-between relative z-50">
         <div className="flex items-center gap-3">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663047046836/hif67mmfrxXgLDxyBaPs4s/cba_logo_cropped_61583c5c.png" alt="CBA Logo" className="h-12 w-12 object-contain" />
           <span className="font-serif font-bold text-xl tracking-wide">Chronological Bible Academy</span>
         </div>
+        {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
           <a href="#framework" className="hover:text-[#d4af37] transition-colors">The Framework</a>
           <a href="#resources" className="hover:text-[#d4af37] transition-colors">Resources</a>
           <a href="#about" className="hover:text-[#d4af37] transition-colors">About</a>
         </div>
-        <a href="https://continuum.chronologicalbibleacademy.com" className="bg-[#d4af37] hover:bg-[#b5952f] text-[#0B1F3B] px-6 py-2.5 rounded-md font-bold text-sm transition-colors">
+        {/* Desktop CTA */}
+        <a href="https://continuum.chronologicalbibleacademy.com" className="hidden md:inline-flex bg-[#d4af37] hover:bg-[#b5952f] text-[#0B1F3B] px-6 py-2.5 rounded-md font-bold text-sm transition-colors">
           Get The Book
         </a>
+        {/* Mobile: hamburger button */}
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          aria-label="Open navigation menu"
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-md text-white hover:text-[#d4af37] hover:bg-white/10 transition-colors"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 z-[100] transition-all duration-300 md:hidden ${
+          mobileMenuOpen ? "visible" : "invisible"
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          onClick={() => setMobileMenuOpen(false)}
+          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+            mobileMenuOpen ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        {/* Drawer panel */}
+        <div
+          className={`absolute top-0 right-0 h-full w-72 bg-[#0B1F3B] border-l border-white/10 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* Drawer header */}
+          <div className="flex items-center justify-between px-6 py-6 border-b border-white/10">
+            <div className="flex items-center gap-3">
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663047046836/hif67mmfrxXgLDxyBaPs4s/cba_logo_cropped_61583c5c.png"
+                alt="CBA Logo"
+                className="h-9 w-9 object-contain"
+              />
+              <span className="font-serif font-bold text-sm tracking-wide text-white">CBA</span>
+            </div>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close navigation menu"
+              className="flex items-center justify-center w-9 h-9 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Drawer nav links */}
+          <nav className="flex flex-col px-6 py-8 gap-1 flex-1">
+            {[
+              { href: "#framework", label: "The Framework" },
+              { href: "#resources", label: "Resources" },
+              { href: "#about", label: "About" },
+            ].map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                onClick={handleNavClick}
+                className="flex items-center justify-between px-4 py-3.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/8 transition-colors group"
+              >
+                {label}
+                <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 text-[#d4af37] transition-opacity" />
+              </a>
+            ))}
+          </nav>
+
+          {/* Drawer CTA */}
+          <div className="px-6 py-6 border-t border-white/10">
+            <a
+              href="https://continuum.chronologicalbibleacademy.com"
+              onClick={handleNavClick}
+              className="flex items-center justify-center gap-2 w-full bg-[#d4af37] hover:bg-[#b5952f] text-[#0B1F3B] px-6 py-3 rounded-md font-bold text-sm transition-colors shadow-[0_0_20px_rgba(212,175,55,0.25)]"
+            >
+              <BookOpen className="w-4 h-4" />
+              Get The Book
+            </a>
+          </div>
+        </div>
+      </div>
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-32 overflow-hidden">
