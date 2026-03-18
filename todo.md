@@ -22,3 +22,4 @@
 - [x] Add FAQ link to desktop nav and mobile drawer
 - [x] Create thank-you page at /ty-tbbp for lead magnet recipients
 - [x] Add SamCart slide-in checkout to /ty-tbbp thank-you page
+- [x] Remove SamCart slide-in from /ty-tbbp and link CTA directly to sales page

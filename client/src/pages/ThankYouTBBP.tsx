@@ -4,20 +4,15 @@
  *
  * Shown after a visitor submits the lead magnet form.
  * Confirms delivery, provides a direct PDF download, and presents
- * the Book One upsell with a SamCart slide-in checkout.
+ * the Book One upsell with a link to the sales page.
  */
 
 import { BookOpen, Download, ArrowRight, CheckCircle2, Star } from "lucide-react";
-import { useEffect } from "react";
 
 const GUIDE_PDF_URL =
   "https://assets.cdn.filesafe.space/3D7QNFhkh5INfr6IVK5T/media/69ba2374ad027630ca652157.pdf";
 
-const SAMCART_SLIDE_SCRIPT =
-  "https://static.samcart.com/checkouts/sc-slide-script.js";
-
-const SAMCART_CHECKOUT_URL =
-  "https://continuum.chronologicalbibleacademy.com/#samcart-slide-open-right";
+const BOOK_SALES_URL = "https://continuum.chronologicalbibleacademy.com/";
 
 const NEXT_STEPS = [
   {
@@ -47,18 +42,6 @@ const BOOK_FEATURES = [
 ];
 
 export default function ThankYouTBBP() {
-  // Load the SamCart slide-in checkout script once on mount
-  useEffect(() => {
-    if (document.querySelector(`script[src="${SAMCART_SLIDE_SCRIPT}"]`)) return;
-    const script = document.createElement("script");
-    script.src = SAMCART_SLIDE_SCRIPT;
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      // Leave the script in place — removing it mid-session breaks the overlay
-    };
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#0B1F3B] text-white font-sans selection:bg-[#d4af37] selection:text-[#0B1F3B]">
 
@@ -208,9 +191,10 @@ export default function ThankYouTBBP() {
                 <div className="text-4xl font-bold text-white mb-1">$27.00</div>
                 <p className="text-gray-500 text-xs mb-5">One-time payment</p>
 
-                {/* SamCart slide-in trigger — href must contain #samcart-slide-open-right */}
                 <a
-                  href={SAMCART_CHECKOUT_URL}
+                  href={BOOK_SALES_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#d4af37] hover:bg-[#b5952f] text-[#0B1F3B] px-8 py-3 rounded-md font-bold text-base transition-colors shadow-[0_0_24px_rgba(212,175,55,0.2)] hover:shadow-[0_0_40px_rgba(212,175,55,0.35)]"
                 >
                   Get Instant Access
