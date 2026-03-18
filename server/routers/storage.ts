@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { nanoid } from "nanoid";
-import { protectedProcedure, router } from "../_core/trpc";
+import { adminProcedure, router } from "../_core/trpc";
 import { storagePut } from "../storage";
 import {
   createUpload,
@@ -15,7 +15,7 @@ export const storageRouter = router({
    * Upload a file. Expects a base64-encoded data URI from the client.
    * Returns the saved upload record.
    */
-  upload: protectedProcedure
+  upload: adminProcedure
     .input(
       z.object({
         fileName: z.string().min(1).max(255),
@@ -56,14 +56,14 @@ export const storageRouter = router({
   /**
    * List all files uploaded by the current user.
    */
-  list: protectedProcedure.query(async ({ ctx }) => {
+  list: adminProcedure.query(async ({ ctx }) => {
     return getUploadsByUser(ctx.user.id);
   }),
 
   /**
    * Delete a file owned by the current user.
    */
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
       const record = await getUploadById(input.id);

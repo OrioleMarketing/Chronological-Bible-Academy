@@ -9,13 +9,14 @@
  * - Interaction: Smooth color transitions on hover, subtle shadow glows on CTAs
  */
 
-import { BookOpen, GraduationCap, Users, ArrowRight, CheckCircle2, ChevronRight, Menu, X, CheckCircle, Loader2 } from "lucide-react";
+import { BookOpen, GraduationCap, Users, ArrowRight, CheckCircle2, ChevronRight, ChevronDown, Menu, X, CheckCircle, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 
 export default function Academy() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Track scroll position for sticky nav styling
   useEffect(() => {
@@ -508,6 +509,72 @@ export default function Academy() {
                 "My goal isn't to give you a seminary degree. My goal is to give you the roadmap so that when you open the Bible, you actually understand what you're reading."
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 bg-[#071529] text-white border-t border-white/10">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-[#d4af37] mb-6">
+              <span className="w-2 h-2 rounded-full bg-[#d4af37]"></span>
+              Common Questions
+            </div>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold">Frequently Asked Questions</h2>
+          </div>
+
+          <div className="space-y-3">
+            {[
+              {
+                q: "Is this for beginners?",
+                a: "Absolutely. The Chronological Bible Academy was built specifically for new believers and seeking Christians who feel overwhelmed by the Bible. No seminary background required — just a desire to understand God's story.",
+              },
+              {
+                q: "What's included in Book One?",
+                a: '"The Bible Finally Makes Sense" walks you through the entire Bible using the 7-Step Continuum framework. It covers all 66 books, showing how each one fits into the larger story from Creation to Restoration. It\'s available now in digital and print formats.',
+              },
+              {
+                q: "When do the Academy courses launch?",
+                a: "Courses are currently in development. Join the waitlist above and you\'ll be the first to know when enrollment opens — including any early-bird pricing available exclusively to waitlist members.",
+              },
+              {
+                q: "How is this different from a Bible reading plan?",
+                a: "Most reading plans give you a schedule but no roadmap. The 7-Step Continuum gives you the big picture first — so when you read any passage, you already know where it fits in the story. It\'s the difference between reading a map and wandering through a forest.",
+              },
+              {
+                q: "What is the 7-Step Continuum?",
+                a: "It\'s the framework at the heart of everything we teach. The entire Bible follows one storyline across seven movements: Creation, Rebellion, Promise, People, King, Church, and Restoration. Once you see it, you can\'t unsee it — and every passage suddenly makes sense.",
+              },
+              {
+                q: "Is the free guide really free?",
+                a: "Yes, completely. Enter your first name and email above and we\'ll send you the full print-ready Big Picture Guide at no cost. No credit card, no catch.",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="border border-white/10 rounded-xl overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between px-6 py-5 text-left bg-white/5 hover:bg-white/8 transition-colors group"
+                >
+                  <span className="font-semibold text-white group-hover:text-[#d4af37] transition-colors pr-4">{item.q}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 text-[#d4af37] flex-shrink-0 transition-transform duration-300 ${
+                      openFaq === i ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                <div
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    openFaq === i ? "max-h-96" : "max-h-0"
+                  }`}
+                >
+                  <p className="px-6 py-5 text-gray-400 leading-relaxed border-t border-white/10">{item.a}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -56,8 +56,9 @@ export default function FileManager() {
   const [dragOver, setDragOver] = useState(false);
 
   const utils = trpc.useUtils();
+  const isAdmin = isAuthenticated && user?.role === "admin";
   const { data: files = [], isLoading } = trpc.storage.list.useQuery(undefined, {
-    enabled: isAuthenticated,
+    enabled: isAdmin,
   });
 
   const uploadMutation = trpc.storage.upload.useMutation({
@@ -117,6 +118,27 @@ export default function FileManager() {
           className="bg-[#d4af37] hover:bg-[#b5952f] text-[#0B1F3B] px-8 py-3 rounded-md font-bold transition-colors"
         >
           Sign In
+        </a>
+      </div>
+    );
+  }
+
+  // ── Admin-only gate ────────────────────────────────────────────────────────
+  if (user?.role !== "admin") {
+    return (
+      <div className="min-h-screen bg-[#0B1F3B] flex flex-col items-center justify-center gap-6 px-6 text-center">
+        <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+          <CloudUpload className="w-10 h-10 text-gray-500" />
+        </div>
+        <h1 className="text-3xl font-serif font-bold text-white">Access Restricted</h1>
+        <p className="text-gray-400 max-w-sm">
+          The File Manager is only available to administrators.
+        </p>
+        <a
+          href="/"
+          className="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-md font-bold transition-colors border border-white/10"
+        >
+          Back to Home
         </a>
       </div>
     );

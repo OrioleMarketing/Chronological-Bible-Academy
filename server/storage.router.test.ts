@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
@@ -42,7 +42,7 @@ vi.mock("./db", async (importOriginal) => {
 });
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-function makeCtx(userId = 1): TrpcContext {
+function makeCtx(userId = 1, role: "admin" | "user" = "admin"): TrpcContext {
   return {
     user: {
       id: userId,
@@ -50,7 +50,7 @@ function makeCtx(userId = 1): TrpcContext {
       name: "Test User",
       email: "test@example.com",
       loginMethod: "manus",
-      role: "user",
+      role,
       createdAt: new Date(),
       updatedAt: new Date(),
       lastSignedIn: new Date(),
@@ -62,8 +62,8 @@ function makeCtx(userId = 1): TrpcContext {
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
 describe("storage router", () => {
-  it("upload: returns file metadata on success", async () => {
-    const caller = appRouter.createCaller(makeCtx());
+  it("upload: returns file metadata on success (admin)", async () => {
+    const caller = appRouter.createCaller(makeCtx(1, "admin"));
     const result = await caller.storage.upload({
       fileName: "test.png",
       mimeType: "image/png",
@@ -75,7 +75,7 @@ describe("storage router", () => {
   });
 
   it("upload: rejects files over 20 MB", async () => {
-    const caller = appRouter.createCaller(makeCtx());
+    const caller = appRouter.createCaller(makeCtx(1, "admin"));
     await expect(
       caller.storage.upload({
         fileName: "huge.bin",
@@ -86,21 +86,38 @@ describe("storage router", () => {
     ).rejects.toThrow("20 MB");
   });
 
-  it("list: returns files for the current user", async () => {
-    const caller = appRouter.createCaller(makeCtx());
+  it("upload: throws FORBIDDEN for non-admin users", async () => {
+    const caller = appRouter.createCaller(makeCtx(1, "user"));
+    await expect(
+      caller.storage.upload({
+        fileName: "test.png",
+        mimeType: "image/png",
+        size: 1024,
+        dataBase64: "dGVzdA==",
+      })
+    ).rejects.toThrow();
+  });
+
+  it("list: returns files for the admin user", async () => {
+    const caller = appRouter.createCaller(makeCtx(1, "admin"));
     const files = await caller.storage.list();
     expect(Array.isArray(files)).toBe(true);
     expect(files[0]?.fileName).toBe("test.png");
   });
 
-  it("delete: removes a file owned by the user", async () => {
-    const caller = appRouter.createCaller(makeCtx());
+  it("list: throws FORBIDDEN for non-admin users", async () => {
+    const caller = appRouter.createCaller(makeCtx(1, "user"));
+    await expect(caller.storage.list()).rejects.toThrow();
+  });
+
+  it("delete: removes a file owned by the admin user", async () => {
+    const caller = appRouter.createCaller(makeCtx(1, "admin"));
     const result = await caller.storage.delete({ id: 1 });
     expect(result.success).toBe(true);
   });
 
   it("delete: throws FORBIDDEN when user does not own the file", async () => {
-    const caller = appRouter.createCaller(makeCtx(99)); // different userId
+    const caller = appRouter.createCaller(makeCtx(99, "admin")); // different userId
     await expect(caller.storage.delete({ id: 1 })).rejects.toThrow("You do not own this file.");
   });
 });

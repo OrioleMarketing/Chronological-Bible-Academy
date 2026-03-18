@@ -17,3 +17,5 @@
 - [x] Wire up course waitlist form to GHL (https://api.oriolemarketing.com/widget/form/19O7CR7PL2dDK3k2bhNB)
 - [x] Add File Manager link to nav (desktop + mobile drawer)
 - [x] Add image preview thumbnails in FileManager file list
+- [x] Add FAQ accordion section above the footer in Home.tsx
+- [x] Restrict File Manager to admin-only (backend role guard + frontend redirect)
