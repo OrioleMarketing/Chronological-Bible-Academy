@@ -21,3 +21,4 @@
 - [x] Restrict File Manager to admin-only (backend role guard + frontend redirect)
 - [x] Add FAQ link to desktop nav and mobile drawer
 - [x] Create thank-you page at /ty-tbbp for lead magnet recipients
+- [x] Add SamCart slide-in checkout to /ty-tbbp thank-you page
