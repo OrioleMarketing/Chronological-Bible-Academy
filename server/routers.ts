@@ -3,6 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { storageRouter } from "./routers/storage";
+import { formsRouter } from "./routers/forms";
 
 export const appRouter = router({
   system: systemRouter,
@@ -15,6 +16,7 @@ export const appRouter = router({
     }),
   }),
   storage: storageRouter,
+  forms: formsRouter,
 });
 
 export type AppRouter = typeof appRouter;

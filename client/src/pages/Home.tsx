@@ -9,9 +9,9 @@
  * - Interaction: Smooth color transitions on hover, subtle shadow glows on CTAs
  */
 
-import { BookOpen, GraduationCap, Users, ArrowRight, CheckCircle2, ChevronRight, Menu, X } from "lucide-react";
+import { BookOpen, GraduationCap, Users, ArrowRight, CheckCircle2, ChevronRight, Menu, X, CheckCircle, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { trpc } from "@/lib/trpc";
 
 export default function Academy() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -36,6 +36,22 @@ export default function Academy() {
 
   const handleNavClick = () => setMobileMenuOpen(false);
 
+  // ── Waitlist form state ──────────────────────────────────────────────────
+  const [waitlistName, setWaitlistName] = useState("");
+  const [waitlistEmail, setWaitlistEmail] = useState("");
+  const [waitlistDone, setWaitlistDone] = useState(false);
+  const waitlistMutation = trpc.forms.submitWaitlist.useMutation({
+    onSuccess: () => { setWaitlistDone(true); setWaitlistName(""); setWaitlistEmail(""); },
+  });
+
+  // ── Lead magnet form state ───────────────────────────────────────────────
+  const [leadFirstName, setLeadFirstName] = useState("");
+  const [leadEmail, setLeadEmail] = useState("");
+  const [leadDone, setLeadDone] = useState(false);
+  const leadMutation = trpc.forms.submitLeadMagnet.useMutation({
+    onSuccess: () => { setLeadDone(true); setLeadFirstName(""); setLeadEmail(""); },
+  });
+
   return (
     <div className="min-h-screen bg-[#0B1F3B] text-white font-sans selection:bg-[#d4af37] selection:text-[#0B1F3B]">
 
@@ -55,6 +71,7 @@ export default function Academy() {
           <a href="#framework" className="hover:text-[#d4af37] transition-colors">The Framework</a>
           <a href="#resources" className="hover:text-[#d4af37] transition-colors">Resources</a>
           <a href="#about" className="hover:text-[#d4af37] transition-colors">About</a>
+          <a href="/files" className="hover:text-[#d4af37] transition-colors">File Manager</a>
         </div>
         {/* Desktop CTA */}
         <a href="https://continuum.chronologicalbibleacademy.com" className="hidden md:inline-flex bg-[#d4af37] hover:bg-[#b5952f] text-[#0B1F3B] px-6 py-2.5 rounded-md font-bold text-sm transition-colors">
@@ -116,6 +133,7 @@ export default function Academy() {
               { href: "#framework", label: "The Framework" },
               { href: "#resources", label: "Resources" },
               { href: "#about", label: "About" },
+              { href: "/files", label: "File Manager" },
             ].map(({ href, label }) => (
               <a
                 key={href}
@@ -335,15 +353,51 @@ export default function Academy() {
                   Walk through every era of Scripture with expert teaching, guided reflection, and a community of like-minded believers. From beginner foundations to advanced mastery.
                 </p>
 
-                <form className="mt-auto space-y-3">
-                  <p className="text-sm font-bold text-[#0B1F3B]">Join the Waitlist:</p>
-                  <div className="flex gap-2">
-                    <input type="email" placeholder="Email address" className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#0B1F3B]" />
-                    <button type="button" className="bg-[#0B1F3B] text-white px-4 py-2 rounded-md font-bold hover:bg-[#1a365d] transition-colors">
-                      Join
-                    </button>
+                {waitlistDone ? (
+                  <div className="mt-auto flex items-center gap-3 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <p className="text-green-800 font-semibold text-sm">You're on the list! We'll notify you when courses launch.</p>
                   </div>
-                </form>
+                ) : (
+                  <form
+                    className="mt-auto space-y-3"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      waitlistMutation.mutate({ fullName: waitlistName, email: waitlistEmail });
+                    }}
+                  >
+                    <p className="text-sm font-bold text-[#0B1F3B]">Join the Waitlist:</p>
+                    <input
+                      type="text"
+                      placeholder="Your name"
+                      required
+                      value={waitlistName}
+                      onChange={(e) => setWaitlistName(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#0B1F3B] text-[#0B1F3B]"
+                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="email"
+                        placeholder="Email address"
+                        required
+                        value={waitlistEmail}
+                        onChange={(e) => setWaitlistEmail(e.target.value)}
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#0B1F3B] text-[#0B1F3B]"
+                      />
+                      <button
+                        type="submit"
+                        disabled={waitlistMutation.isPending}
+                        className="bg-[#0B1F3B] text-white px-4 py-2 rounded-md font-bold hover:bg-[#1a365d] transition-colors disabled:opacity-60 flex items-center gap-1.5"
+                      >
+                        {waitlistMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                        Join
+                      </button>
+                    </div>
+                    {waitlistMutation.isError && (
+                      <p className="text-red-600 text-xs">{waitlistMutation.error.message}</p>
+                    )}
+                  </form>
+                )}
               </div>
             </div>
           </div>
@@ -379,21 +433,54 @@ export default function Academy() {
                 <p className="text-gray-300 text-lg leading-relaxed">
                   Stop playing "Bible Roulette." Download this beautiful, print-ready guide to keep in your Bible. It shows you exactly how the entire story connects from Creation to Restoration across 7 Major Stages and 16 Key Movements.
                 </p>
-                <form className="flex flex-col sm:flex-row gap-3 pt-2">
-                  <input
-                    type="email"
-                    placeholder="Enter your email address"
-                    required
-                    className="flex-1 px-5 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition-all"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-[#d4af37] hover:bg-[#b5952f] text-[#0B1F3B] px-6 py-3 rounded-md font-bold transition-colors shadow-lg whitespace-nowrap"
-                  >
-                    Send My Guide
-                  </button>
-                </form>
-                <p className="text-xs text-gray-500 text-center md:text-left">We respect your privacy. Unsubscribe at any time.</p>
+                {leadDone ? (
+                  <div className="flex items-center gap-3 bg-[#d4af37]/10 border border-[#d4af37]/40 rounded-lg px-5 py-4 mt-2">
+                    <CheckCircle className="w-6 h-6 text-[#d4af37] flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-semibold">Guide on its way!</p>
+                      <p className="text-gray-400 text-sm">Check your inbox — your free guide is headed to you now.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <form
+                      className="flex flex-col sm:flex-row gap-3 pt-2"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        leadMutation.mutate({ firstName: leadFirstName, email: leadEmail });
+                      }}
+                    >
+                      <input
+                        type="text"
+                        placeholder="First name"
+                        required
+                        value={leadFirstName}
+                        onChange={(e) => setLeadFirstName(e.target.value)}
+                        className="w-full sm:w-40 px-5 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition-all"
+                      />
+                      <input
+                        type="email"
+                        placeholder="Email address"
+                        required
+                        value={leadEmail}
+                        onChange={(e) => setLeadEmail(e.target.value)}
+                        className="flex-1 px-5 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition-all"
+                      />
+                      <button
+                        type="submit"
+                        disabled={leadMutation.isPending}
+                        className="bg-[#d4af37] hover:bg-[#b5952f] text-[#0B1F3B] px-6 py-3 rounded-md font-bold transition-colors shadow-lg whitespace-nowrap disabled:opacity-60 flex items-center justify-center gap-2"
+                      >
+                        {leadMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                        Send My Guide
+                      </button>
+                    </form>
+                    {leadMutation.isError && (
+                      <p className="text-red-400 text-xs mt-1">{leadMutation.error.message}</p>
+                    )}
+                    <p className="text-xs text-gray-500 text-center md:text-left">We respect your privacy. Unsubscribe at any time.</p>
+                  </>
+                )}
               </div>
             </div>
           </div>

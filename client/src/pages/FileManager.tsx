@@ -211,9 +211,18 @@ export default function FileManager() {
                 key={f.id}
                 className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-xl px-5 py-4 hover:bg-white/8 transition-colors group"
               >
-                {/* Icon */}
-                <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
-                  {fileIcon(f.mimeType)}
+                {/* Thumbnail or icon */}
+                <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                  {f.mimeType.startsWith("image/") ? (
+                    <img
+                      src={f.url}
+                      alt={f.fileName}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    fileIcon(f.mimeType)
+                  )}
                 </div>
 
                 {/* Info */}

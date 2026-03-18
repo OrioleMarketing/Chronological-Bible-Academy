@@ -12,3 +12,8 @@
 - [x] Build FileManager page (/files) with drag-and-drop upload, file list, preview, delete
 - [x] Register /files route in App.tsx
 - [x] Write vitest tests for storage router (6 tests passing)
+- [x] Inspect GHL form endpoints to understand field names
+- [x] Wire up lead magnet form to GHL (https://api.oriolemarketing.com/widget/form/2wVYZEzXTdyyOcE3tbKY)
+- [x] Wire up course waitlist form to GHL (https://api.oriolemarketing.com/widget/form/19O7CR7PL2dDK3k2bhNB)
+- [x] Add File Manager link to nav (desktop + mobile drawer)
+- [x] Add image preview thumbnails in FileManager file list
