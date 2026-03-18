@@ -20,3 +20,4 @@
 - [x] Add FAQ accordion section above the footer in Home.tsx
 - [x] Restrict File Manager to admin-only (backend role guard + frontend redirect)
 - [x] Add FAQ link to desktop nav and mobile drawer
+- [x] Create thank-you page at /ty-tbbp for lead magnet recipients
