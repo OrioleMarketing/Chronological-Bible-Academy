@@ -16,7 +16,7 @@ const NEXT_STEPS = [
     step: "1",
     title: "Download Your Free Guide",
     description:
-      'Click the button below to open "The Bible\'s Big Picture Guide" as a PDF. You can read it on any device or print it for easy reference.',
+      `Click the button above to open "The Bible's Big Picture Guide" as a PDF. You can read it on any device or print it for easy reference.`,
   },
   {
     step: "2",
@@ -131,8 +131,7 @@ export default function ThankYouTBBP() {
             Ready to Go Deeper?
           </h2>
           <p className="text-gray-400 leading-relaxed mb-8 max-w-lg mx-auto">
-            The guide gives you the big picture. <strong className="text-white">Book One</strong> walks you
-            through every chapter of the Bible using the same 7-Step Continuum
+            The guide gives you the big picture. <strong className="text-white">Book One</strong> walks you through every book of the Bible using the same 7-Step Continuum
             framework — so the whole story finally clicks into place.
           </p>
           <a
