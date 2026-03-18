@@ -72,6 +72,7 @@ export default function Academy() {
           <a href="#framework" className="hover:text-[#d4af37] transition-colors">The Framework</a>
           <a href="#resources" className="hover:text-[#d4af37] transition-colors">Resources</a>
           <a href="#about" className="hover:text-[#d4af37] transition-colors">About</a>
+          <a href="#faq" className="hover:text-[#d4af37] transition-colors">FAQ</a>
           <a href="/files" className="hover:text-[#d4af37] transition-colors">File Manager</a>
         </div>
         {/* Desktop CTA */}
@@ -134,6 +135,7 @@ export default function Academy() {
               { href: "#framework", label: "The Framework" },
               { href: "#resources", label: "Resources" },
               { href: "#about", label: "About" },
+              { href: "#faq", label: "FAQ" },
               { href: "/files", label: "File Manager" },
             ].map(({ href, label }) => (
               <a
