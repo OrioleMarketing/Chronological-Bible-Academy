@@ -10,14 +10,14 @@
       "destination": "https://agile-generosity-production.up.railway.app/api/:path*"
     },
     {
-      "source": "/",
+      "source": "/:path*",
       "has": [
         {
           "type": "host",
           "value": "continuum.chronologicalbibleacademy.com"
         }
       ],
-      "destination": "/continuum/index.html"
+      "destination": "/continuum/:path*"
     },
     {
       "source": "/((?!api/).*)",
