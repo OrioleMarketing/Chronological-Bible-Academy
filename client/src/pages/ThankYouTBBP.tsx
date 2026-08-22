@@ -49,7 +49,7 @@ export default function ThankYouTBBP() {
       <header className="border-b border-white/10 px-6 py-4">
         <div className="container mx-auto flex items-center gap-3">
           <img
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663047046836/hif67mmfrxXgLDxyBaPs4s/cba_logo_cropped_61583c5c.png"
+            src="https://chronologicalbibleacademy.s3.us-east-2.amazonaws.com/manus-storage/cba_logo_cropped_61583c5c.png"
             alt="CBA Logo"
             className="h-10 w-10 object-contain"
           />

@@ -64,7 +64,7 @@ export default function Academy() {
       }`}>
       <nav className="container mx-auto px-6 py-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663047046836/hif67mmfrxXgLDxyBaPs4s/cba_logo_cropped_61583c5c.png" alt="CBA Logo" className="h-12 w-12 object-contain" />
+          <img src="https://chronologicalbibleacademy.s3.us-east-2.amazonaws.com/manus-storage/cba_logo_cropped_61583c5c.png" alt="CBA Logo" className="h-12 w-12 object-contain" />
           <span className="font-serif font-bold text-xl tracking-wide">Chronological Bible Academy</span>
         </div>
         {/* Desktop nav links */}
@@ -114,7 +114,7 @@ export default function Academy() {
           <div className="flex items-center justify-between px-6 py-6 border-b border-white/10">
             <div className="flex items-center gap-3">
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663047046836/hif67mmfrxXgLDxyBaPs4s/cba_logo_cropped_61583c5c.png"
+                src="https://chronologicalbibleacademy.s3.us-east-2.amazonaws.com/manus-storage/cba_logo_cropped_61583c5c.png"
                 alt="CBA Logo"
                 className="h-9 w-9 object-contain"
               />
@@ -496,7 +496,7 @@ export default function Academy() {
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="w-48 h-48 md:w-64 md:h-64 flex-shrink-0 rounded-full overflow-hidden border-4 border-[#d4af37] shadow-xl">
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663047046836/hif67mmfrxXgLDxyBaPs4s/017-6A8W2zA1uss_92559790.jpeg"
+                src="https://chronologicalbibleacademy.s3.us-east-2.amazonaws.com/manus-storage/017-6A8W2zA1uss_92559790.jpeg"
                 alt="Bruce A Mayo"
                 className="w-full h-full object-cover"
               />
@@ -585,7 +585,7 @@ export default function Academy() {
       <footer className="bg-[#0B1F3B] text-white py-12 border-t border-white/10">
         <div className="container mx-auto px-6 text-center">
           <div className="flex justify-center mb-6">
-            <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663047046836/hif67mmfrxXgLDxyBaPs4s/cba_logo_cropped_61583c5c.png" alt="CBA Logo" className="h-12 w-12 opacity-50 object-contain" />
+            <img src="https://chronologicalbibleacademy.s3.us-east-2.amazonaws.com/manus-storage/cba_logo_cropped_61583c5c.png" alt="CBA Logo" className="h-12 w-12 opacity-50 object-contain" />
           </div>
           <p className="text-gray-400 mb-4">© {new Date().getFullYear()} Chronological Bible Academy. All rights reserved.</p>
           <div className="flex justify-center gap-6 text-sm text-gray-500">
