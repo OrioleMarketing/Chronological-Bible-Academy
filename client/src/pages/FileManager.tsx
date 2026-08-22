@@ -27,10 +27,14 @@ function formatBytes(bytes: number): string {
 }
 
 function fileIcon(mimeType: string) {
-  if (mimeType.startsWith("image/")) return <Image className="w-5 h-5 text-[#d4af37]" />;
-  if (mimeType.startsWith("video/")) return <Film className="w-5 h-5 text-blue-400" />;
-  if (mimeType.startsWith("audio/")) return <Music className="w-5 h-5 text-purple-400" />;
-  if (mimeType === "application/pdf") return <FileText className="w-5 h-5 text-red-400" />;
+  if (mimeType.startsWith("image/"))
+    return <Image className="w-5 h-5 text-[#d4af37]" />;
+  if (mimeType.startsWith("video/"))
+    return <Film className="w-5 h-5 text-blue-400" />;
+  if (mimeType.startsWith("audio/"))
+    return <Music className="w-5 h-5 text-purple-400" />;
+  if (mimeType === "application/pdf")
+    return <FileText className="w-5 h-5 text-red-400" />;
   return <File className="w-5 h-5 text-gray-400" />;
 }
 
@@ -57,16 +61,19 @@ export default function FileManager() {
 
   const utils = trpc.useUtils();
   const isAdmin = isAuthenticated && user?.role === "admin";
-  const { data: files = [], isLoading } = trpc.storage.list.useQuery(undefined, {
-    enabled: isAdmin,
-  });
+  const { data: files = [], isLoading } = trpc.storage.list.useQuery(
+    undefined,
+    {
+      enabled: isAdmin,
+    }
+  );
 
   const uploadMutation = trpc.storage.upload.useMutation({
     onSuccess: () => {
       utils.storage.list.invalidate();
       toast.success("File uploaded successfully.");
     },
-    onError: (err) => toast.error(err.message),
+    onError: err => toast.error(err.message),
   });
 
   const deleteMutation = trpc.storage.delete.useMutation({
@@ -74,7 +81,7 @@ export default function FileManager() {
       utils.storage.list.invalidate();
       toast.success("File deleted.");
     },
-    onError: (err) => toast.error(err.message),
+    onError: err => toast.error(err.message),
   });
 
   async function handleFiles(fileList: FileList | null) {
@@ -109,7 +116,9 @@ export default function FileManager() {
     return (
       <div className="min-h-screen bg-[#0B1F3B] flex flex-col items-center justify-center gap-6 px-6 text-center">
         <CloudUpload className="w-16 h-16 text-[#d4af37] opacity-80" />
-        <h1 className="text-3xl font-serif font-bold text-white">File Manager</h1>
+        <h1 className="text-3xl font-serif font-bold text-white">
+          File Manager
+        </h1>
         <p className="text-gray-400 max-w-sm">
           Sign in to upload and manage your files securely in the cloud.
         </p>
@@ -130,7 +139,9 @@ export default function FileManager() {
         <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
           <CloudUpload className="w-10 h-10 text-gray-500" />
         </div>
-        <h1 className="text-3xl font-serif font-bold text-white">Access Restricted</h1>
+        <h1 className="text-3xl font-serif font-bold text-white">
+          Access Restricted
+        </h1>
         <p className="text-gray-400 max-w-sm">
           The File Manager is only available to administrators.
         </p>
@@ -161,24 +172,36 @@ export default function FileManager() {
             </span>
           </a>
           <span className="text-white/30 text-lg">/</span>
-          <span className="text-[#d4af37] font-semibold text-sm">File Manager</span>
+          <span className="text-[#d4af37] font-semibold text-sm">
+            File Manager
+          </span>
         </div>
         <span className="text-sm text-gray-400 hidden sm:block">
-          Signed in as <span className="text-white font-medium">{user?.name ?? user?.email}</span>
+          Signed in as{" "}
+          <span className="text-white font-medium">
+            {user?.name ?? user?.email}
+          </span>
         </span>
       </header>
 
       <main className="container mx-auto px-6 py-12 max-w-5xl">
         <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">File Manager</h1>
-          <p className="text-gray-400">Upload, preview, and manage your files stored in the cloud.</p>
+          <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">
+            File Manager
+          </h1>
+          <p className="text-gray-400">
+            Upload, preview, and manage your files stored in the cloud.
+          </p>
         </div>
 
         {/* Drop zone */}
         <div
-          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragOver={e => {
+            e.preventDefault();
+            setDragOver(true);
+          }}
           onDragLeave={() => setDragOver(false)}
-          onDrop={(e) => {
+          onDrop={e => {
             e.preventDefault();
             setDragOver(false);
             handleFiles(e.dataTransfer.files);
@@ -195,7 +218,7 @@ export default function FileManager() {
             type="file"
             multiple
             className="hidden"
-            onChange={(e) => handleFiles(e.target.files)}
+            onChange={e => handleFiles(e.target.files)}
           />
           {uploading ? (
             <div className="flex flex-col items-center gap-3">
@@ -208,9 +231,12 @@ export default function FileManager() {
                 <Upload className="w-7 h-7 text-[#d4af37]" />
               </div>
               <p className="text-white font-semibold text-lg">
-                Drop files here or <span className="text-[#d4af37]">browse</span>
+                Drop files here or{" "}
+                <span className="text-[#d4af37]">browse</span>
               </p>
-              <p className="text-gray-500 text-sm">Any file type · Max 20 MB per file</p>
+              <p className="text-gray-500 text-sm">
+                Any file type · Max 20 MB per file
+              </p>
             </div>
           )}
         </div>
@@ -227,8 +253,10 @@ export default function FileManager() {
           </div>
         ) : (
           <div className="space-y-3">
-            <p className="text-sm text-gray-500 mb-4">{files.length} file{files.length !== 1 ? "s" : ""}</p>
-            {files.map((f) => (
+            <p className="text-sm text-gray-500 mb-4">
+              {files.length} file{files.length !== 1 ? "s" : ""}
+            </p>
+            {files.map(f => (
               <div
                 key={f.id}
                 className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-xl px-5 py-4 hover:bg-white/8 transition-colors group"
@@ -249,7 +277,9 @@ export default function FileManager() {
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-white font-medium truncate text-sm">{f.fileName}</p>
+                  <p className="text-white font-medium truncate text-sm">
+                    {f.fileName}
+                  </p>
                   <p className="text-gray-500 text-xs mt-0.5">
                     {formatBytes(f.size)} · {f.mimeType} ·{" "}
                     {new Date(f.createdAt).toLocaleDateString()}
