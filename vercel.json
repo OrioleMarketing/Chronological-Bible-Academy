@@ -1,0 +1,27 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm run build:client",
+  "outputDirectory": "dist/public",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://agile-generosity-production.up.railway.app/api/:path*"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "continuum.chronologicalbibleacademy.com"
+        }
+      ],
+      "destination": "/continuum/index.html"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
