@@ -10,7 +10,7 @@ vi.mock("./storage", () => ({
   }),
 }));
 
-vi.mock("./db", async (importOriginal) => {
+vi.mock("./db", async importOriginal => {
   const actual = await importOriginal<typeof import("./db")>();
   return {
     ...actual,
@@ -118,6 +118,8 @@ describe("storage router", () => {
 
   it("delete: throws FORBIDDEN when user does not own the file", async () => {
     const caller = appRouter.createCaller(makeCtx(99, "admin")); // different userId
-    await expect(caller.storage.delete({ id: 1 })).rejects.toThrow("You do not own this file.");
+    await expect(caller.storage.delete({ id: 1 })).rejects.toThrow(
+      "You do not own this file."
+    );
   });
 });

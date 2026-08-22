@@ -7,7 +7,13 @@
  * the Book One upsell with a link to the sales page.
  */
 
-import { BookOpen, Download, ArrowRight, CheckCircle2, Star } from "lucide-react";
+import {
+  BookOpen,
+  Download,
+  ArrowRight,
+  CheckCircle2,
+  Star,
+} from "lucide-react";
 
 const GUIDE_PDF_URL =
   "https://assets.cdn.filesafe.space/3D7QNFhkh5INfr6IVK5T/media/69ba2374ad027630ca652157.pdf";
@@ -18,8 +24,7 @@ const NEXT_STEPS = [
   {
     step: "1",
     title: "Download Your Free Guide",
-    description:
-      `Click the button above to open "The Bible's Big Picture Guide" as a PDF. You can read it on any device or print it for easy reference.`,
+    description: `Click the button above to open "The Bible's Big Picture Guide" as a PDF. You can read it on any device or print it for easy reference.`,
   },
   {
     step: "2",
@@ -44,7 +49,6 @@ const BOOK_FEATURES = [
 export default function ThankYouTBBP() {
   return (
     <div className="min-h-screen bg-[#0B1F3B] text-white font-sans selection:bg-[#d4af37] selection:text-[#0B1F3B]">
-
       {/* Minimal nav */}
       <header className="border-b border-white/10 px-6 py-4">
         <div className="container mx-auto flex items-center gap-3">
@@ -62,7 +66,6 @@ export default function ThankYouTBBP() {
       {/* Hero confirmation */}
       <section className="py-20 px-6 text-center">
         <div className="container mx-auto max-w-2xl">
-
           {/* Success badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 text-sm font-medium text-[#d4af37] mb-8">
             <CheckCircle2 className="w-4 h-4" />
@@ -120,7 +123,9 @@ export default function ThankYouTBBP() {
                   {step}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white text-lg mb-1">{title}</h3>
+                  <h3 className="font-semibold text-white text-lg mb-1">
+                    {title}
+                  </h3>
                   <p className="text-gray-400 leading-relaxed">{description}</p>
                 </div>
               </div>
@@ -135,7 +140,6 @@ export default function ThankYouTBBP() {
       {/* Upsell — Book One with SamCart slide-in */}
       <section className="py-20 px-6">
         <div className="container mx-auto max-w-3xl">
-
           {/* Section label */}
           <div className="flex justify-center mb-6">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 text-sm font-medium text-[#d4af37]">
@@ -177,8 +181,11 @@ export default function ThankYouTBBP() {
                   The complete guide to seeing Scripture as one connected story.
                 </p>
                 <ul className="space-y-2">
-                  {BOOK_FEATURES.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
+                  {BOOK_FEATURES.map(f => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-2 text-sm text-gray-300"
+                    >
                       <CheckCircle2 className="w-4 h-4 text-[#d4af37] mt-0.5 flex-shrink-0" />
                       {f}
                     </li>
@@ -221,7 +228,8 @@ export default function ThankYouTBBP() {
       <footer className="border-t border-white/10 py-8 px-6 text-center">
         <div className="container mx-auto">
           <p className="text-gray-600 text-sm">
-            © {new Date().getFullYear()} Chronological Bible Academy. All rights reserved.
+            © {new Date().getFullYear()} Chronological Bible Academy. All
+            rights reserved.
           </p>
           <a
             href="/"
@@ -231,7 +239,6 @@ export default function ThankYouTBBP() {
           </a>
         </div>
       </footer>
-
     </div>
   );
 }
